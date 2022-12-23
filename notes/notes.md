@@ -52,10 +52,20 @@ After analyzing and addressing memory bound issue as much as possible, we need t
 
 
 ## System level optimization ( considering CPU & GPU interaction)
+
+### Pinned Memory
 ![device-host](https://user-images.githubusercontent.com/9162336/209401116-f101f341-058f-4ae1-83eb-ed6692809887.png)
 
 - CPU (host) to GPU (device) interaction is using PCIe with max of 6GB/s data badnwidth
 - Copy Host 2 Device, in CPU memory data frist will be copied to pinned memory then from there copied to GPU.
 - using CUDA Host Malloc, will directly allocated memory on pinned memory on CPU so will skip the copy to pinned memory part that is time consuming.
 -  Thats why in PyTorch pinning memory is an optimizaiton for dataloaders to run faster.
+-  CUDA Memcpy Async, let the CPU work while copy to device is in progress.
+-  <img width="600" alt="Screen Shot 2022-12-23 at 12 09 45 PM" src="https://user-images.githubusercontent.com/9162336/209401585-8a1c6c33-e146-4fe5-95e4-97c014ceae60.png">
+
+### CUDA streams
+Streams are a sequence of operations that execute in order
+
+- <img width="600" alt="Screen Shot 2022-12-23 at 12 09 45 PM" src="https://user-images.githubusercontent.com/9162336/209402432-4238be9b-b18e-4a08-b3f8-aa13754e59af.png">
+
 
