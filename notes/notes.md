@@ -4,7 +4,7 @@
 * memory clock: 2508 MHZ ==> 2508 x 10^6 clock/sec
 * memory bus:128 bits ==> 16byte/ clock 
 * max bandwidth = memory clock x memory bus = 40 GB/S
-if the DRAM utilizatin is 40-60% okay, 60-70% good, > 75% excellent
+- if the DRAM utilizatin is 40-60% okay, 60-70% good, > 75% excellent
 
 #### example of a Transpose kernel badnwidth
 
