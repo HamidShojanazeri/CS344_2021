@@ -3,6 +3,12 @@
 
 ![GPUs_flowchart](https://user-images.githubusercontent.com/9162336/209252228-0b1c74fc-e2d6-4ea6-9e59-ccf0dfba6122.png)
 
+**Goal here is to maximize the useful computation**
+
+GPU code issues usually are either **memory bound** or **compute bound**. We need to make sure we are using a good percentage of the memory banddwidth and at the same time optimize the compute bound issues as well.
+
+For the first challenge lets look at the following for **memory bound** issues:
+
 ## Theoratical peak bandwidth
 
 - `device query` run the command to get device info, important ones:
@@ -27,4 +33,29 @@
 - bad coalesing in read or write? could be a big hit on performance, tiling could help here
 - <img width="1361" alt="Screen Shot 2022-12-22 at 5 11 17 PM" src="https://user-images.githubusercontent.com/9162336/209251396-b184c471-020f-4f01-a748-07a0c70a2068.png">
 
+
+For the second challenge lets look at the following for **compute bound** issues:
+
+After analyzing and addressing memory bound issue as much as possible, we need to look at the computation part.
+
+**Goal** here is to maximize the useful computation, if the code is compute bound, high level usually two main actions here we need take
+
+* **minimize the time waiting at barriers**( this can happen when for example our tiling block is running a larger block size, laucnhing larger number of threads in the thread blocks)
+
+* **minimize the thread divergence**
+  * Warp: set of threads that execute same instruction at a time
+  * SIMD: single instruction multiple data, you can amortize the work on fetching, decoding the instrcution to run on multiple data,( think of CPUs SSE or AVX vector instructions, where it will effect  4-8 pieces of data per instruction)
+  * SIMT: single instruction multiple threads ( this matter when we have branch divergence)
+    * each warp can take 32 threads
+    * one example is if there are control flow in the code, some threads execute the if branch while others execute the else branch, as threads in a warp can execute a single instruciton at the time hardware automatically shutdown some of the threads resultsing in slow down of the code (thread divergence)
+    * <img width="1382" alt="Screen Shot 2022-12-23 at 10 58 53 AM" src="https://user-images.githubusercontent.com/9162336/209394791-f392b20f-2253-4eb5-94c4-8a5492cbabe3.png">
+
+
+## System level optimization ( considering CPU & GPU interaction)
+![device-host](https://user-images.githubusercontent.com/9162336/209401116-f101f341-058f-4ae1-83eb-ed6692809887.png)
+
+- CPU (host) to GPU (device) interaction is using PCIe with max of 6GB/s data badnwidth
+- Copy Host 2 Device, in CPU memory data frist will be copied to pinned memory then from there copied to GPU.
+- using CUDA Host Malloc, will directly allocated memory on pinned memory on CPU so will skip the copy to pinned memory part that is time consuming.
+-  Thats why in PyTorch pinning memory is an optimizaiton for dataloaders to run faster.
 
