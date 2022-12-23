@@ -11,3 +11,5 @@
 - suppose we have a 1024 x 1024 matrix
 - total execution time = 0.6 ms
 - peak bandwidth = (1024 x 1024 x 4(bytes) x 2(reading and writing transfer across the bus))/ 0.6(total time) = 1.25 10^10 = 12 GB
+
+- Paralallization would help to get higher bandwidth, techniques such as tiling, and others.
