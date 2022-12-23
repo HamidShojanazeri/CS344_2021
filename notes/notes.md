@@ -9,7 +9,13 @@ GPU code issues usually are either **memory bound** or **compute bound**. We nee
 
 For the first challenge lets look at the following for **memory bound** issues:
 
-## Theoratical peak bandwidth
+## Memory bound issues
+
+### Measure and improve memory badnwidth
+ * **Assure sufficient occupancy on GPU
+ * **Coalece global memory access
+
+#### Theoratical peak bandwidth
 
 - `device query` run the command to get device info, important ones:
 * memory clock: 2508 MHZ ==> 2508 x 10^6 clock/sec
@@ -24,6 +30,7 @@ For the first challenge lets look at the following for **memory bound** issues:
 - peak bandwidth = (1024 x 1024 x 4(bytes) x 2(reading and writing transfer across the bus))/ 0.6(total time) = 1.25 10^10 = 12 GB
 - can use profilers NVVP, NSIGHT, run Analyze all and can look at the DRAM untilization
 
+
 **Paralallization would help to get higher bandwidth, techniques such as tiling, and others.**
 
 ### How to optimize
@@ -35,6 +42,8 @@ For the first challenge lets look at the following for **memory bound** issues:
 
 
 For the second challenge lets look at the following for **compute bound** issues:
+
+## Compute bound issues
 
 After analyzing and addressing memory bound issue as much as possible, we need to look at the computation part.
 
@@ -64,7 +73,10 @@ After analyzing and addressing memory bound issue as much as possible, we need t
 -  <img width="600" alt="Screen Shot 2022-12-23 at 12 09 45 PM" src="https://user-images.githubusercontent.com/9162336/209401585-8a1c6c33-e146-4fe5-95e4-97c014ceae60.png">
 
 ### CUDA streams
-Streams are a sequence of operations that execute in order
+Streams are a sequence of operations that execute in order (memory transfers, kernels): 
+- Using multiple streams can parallelize and speed up the process
+- it can overlap data transfer( communication) and computation
+- Help to fill GPU with smaller kernels
 
 - <img width="600" alt="Screen Shot 2022-12-23 at 12 09 45 PM" src="https://user-images.githubusercontent.com/9162336/209402432-4238be9b-b18e-4a08-b3f8-aa13754e59af.png">
 
