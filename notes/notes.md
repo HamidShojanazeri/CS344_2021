@@ -80,4 +80,21 @@ Streams are a sequence of operations that execute in order (memory transfers, ke
 
 - <img width="600" alt="Screen Shot 2022-12-23 at 12 09 45 PM" src="https://user-images.githubusercontent.com/9162336/209402432-4238be9b-b18e-4a08-b3f8-aa13754e59af.png">
 
+### Patterns of Parallelization
 
+1. Data layout transformation:
+ * Memroy coalescing
+ * Array of structured of tiled arrays (ASTA)
+ 
+2. Scatter to gather tranasformation
+ * Gather : many overlapping reads
+ * Scatter : many potentially conlciting writes
+ 
+3. Tiling : buffering data into on-chip fast memory for repeated access
+
+4. Privatization : give each thread copy of the data to write in a specific memory location and finally do an all reduce
+
+5. Binning : build a data structure that maps output data to the relevant (small set of )input data
+
+6. Compaction: making a dense array from an sparse array and compute parallelization/multi-threading on them
+7. Regularization : load balancing in distribution of work overs threads ( where mostly work is distributed evenly with some great outliers)
