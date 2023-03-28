@@ -30,6 +30,15 @@ For the first challenge lets look at the following for **memory bound** issues:
 - peak bandwidth = (1024 x 1024 x 4(bytes) x 2(reading and writing transfer across the bus))/ 0.6(total time) = 1.25 10^10 = 12 GB
 - can use profilers NVVP, NSIGHT, run Analyze all and can look at the DRAM untilization
 
+#### Arthmitic intensity
+FLOPS/bytes(read/written)
+z= x+y -->in FP32
+Read = 2x4bytes = 8 bytes
+write = 4 bytes
+flops = 1 (only one add)
+
+arthimitic intensity = 1/12
+
 
 **Paralallization would help to get higher bandwidth, techniques such as tiling, and others.**
 
